@@ -1,17 +1,16 @@
 package com.example.beardie.currencyholder.data
 
-import com.example.beardie.currencyholder.data.enum.CurrencyEnum
 import com.example.beardie.currencyholder.data.model.Balance
+import com.example.beardie.currencyholder.data.model.FinanceCurrency
+import javax.inject.Inject
 
-class BalanceRepository {
-
-    //hardcode values
-    private val balances = listOf(
-            Balance("1", 5000, CurrencyEnum.RUB, true),
-            Balance("2", 100, CurrencyEnum.USD, false)
-    )
+class BalanceRepository @Inject constructor() {
 
     fun getBalances() : List<Balance> {
-        return balances
+        return HardcodeValues.balances
+    }
+
+    fun getBalance(financeCurrency: FinanceCurrency?): Balance? {
+        return HardcodeValues.balances.find { b -> b.currency == financeCurrency }
     }
 }

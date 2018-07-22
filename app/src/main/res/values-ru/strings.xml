@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Финансовый трекер</string>
+    <string name="finance_toolbar_title">Финансы</string>
+    <string name="settings_toolbar_title">Настройки</string>
+    <string name="about_toolbar_title">О приложении</string>
+    <string name="title_no_transactions">Кто то украл ваши транзакции</string>
+    <string name="nav_header_title">Финансовый трекер</string>
+    <string name="nav_header_description">Ваши деньги - наше приложение</string>
+    <!-- format -->
+    <string name="format_balance_text">%1$.2f %2$s</string>
+</resources>
