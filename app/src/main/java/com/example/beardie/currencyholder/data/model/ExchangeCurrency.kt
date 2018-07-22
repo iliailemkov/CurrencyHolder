@@ -2,9 +2,9 @@ package com.example.beardie.currencyholder.data.model
 
 import java.util.*
 
-data class Balance (
+data class ExchangeCurrency (
     var id: String = UUID.randomUUID().toString(),
-    var balance: Float,
-    var currency: FinanceCurrency,
-    var active: Boolean
+    var fromCurrency: FinanceCurrency,
+    var toCurrency: FinanceCurrency,
+    var coef: Float
 )
