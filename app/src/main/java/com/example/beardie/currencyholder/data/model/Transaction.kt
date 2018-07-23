@@ -6,6 +6,6 @@ import java.util.*
 data class Transaction(
     var id: String = UUID.randomUUID().toString(),
     var operation: TypeOperationEnum,
-    var count: Float,
+    var count: Double,
     var currency: FinanceCurrency
 )

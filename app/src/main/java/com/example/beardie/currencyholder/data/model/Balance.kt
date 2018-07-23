@@ -4,7 +4,7 @@ import java.util.*
 
 data class Balance (
     var id: String = UUID.randomUUID().toString(),
-    var balance: Float,
+    var balance: Double,
     var currency: FinanceCurrency,
     var active: Boolean
 )

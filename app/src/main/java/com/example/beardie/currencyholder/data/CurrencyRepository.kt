@@ -1,6 +1,5 @@
 package com.example.beardie.currencyholder.data
 
-import com.example.beardie.currencyholder.data.model.Balance
 import com.example.beardie.currencyholder.data.model.FinanceCurrency
 import javax.inject.Inject
 
