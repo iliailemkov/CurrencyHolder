@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "425949612206",
+    "firebase_url": "https://currencyholder-18251.firebaseio.com",
+    "project_id": "currencyholder-18251",
+    "storage_bucket": "currencyholder-18251.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425949612206:android:bdfab7003fd389c6",
+        "android_client_info": {
+          "package_name": "com.example.beardie.currencyholder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425949612206-l8houi8a5afr9al27940b1l7l76j5o2n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.beardie.currencyholder",
+            "certificate_hash": "c2518a284a83b9b55078e8b3fdfde0ac857eccbd"
+          }
+        },
+        {
+          "client_id": "425949612206-uf618nshre0943lnsgnbktobiga1m6sv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvmGXgZLha18obFoOvYqkrKtJk_G5PsB4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425949612206-uf618nshre0943lnsgnbktobiga1m6sv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
