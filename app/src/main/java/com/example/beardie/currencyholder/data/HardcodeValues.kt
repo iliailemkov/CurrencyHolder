@@ -14,19 +14,19 @@ object HardcodeValues {
     )
 
     val exchange = listOf(
-            ExchangeCurrency("1", currency[0], currency[1], 0.016f),
-            ExchangeCurrency("2", currency[1], currency[0], 63.49f)
+            ExchangeCurrency("1", currency[0], currency[1], 0.016),
+            ExchangeCurrency("2", currency[1], currency[0], 63.49)
     )
 
     val transactions = listOf(
-            Transaction("1", TypeOperationEnum.SUM, 100f, currency[0]),
-            Transaction("2", TypeOperationEnum.SUM, -90f, currency[1]),
-            Transaction("3", TypeOperationEnum.SUM, 99f, currency[1]),
-            Transaction("4", TypeOperationEnum.SUM, -133f, currency[0])
+            Transaction("1", TypeOperationEnum.SUM, 100.0, currency[0]),
+            Transaction("2", TypeOperationEnum.SUM, -90.0, currency[1]),
+            Transaction("3", TypeOperationEnum.SUM, 99.0, currency[1]),
+            Transaction("4", TypeOperationEnum.SUM, -133.0, currency[0])
     )
 
     val balances = listOf(
-            Balance("1", -5000f, currency[0], true),
-            Balance("2", 100f, currency[1], false)
+            Balance("1", -5000.0, currency[0], true),
+            Balance("2", 100.0, currency[1], false)
     )
 }

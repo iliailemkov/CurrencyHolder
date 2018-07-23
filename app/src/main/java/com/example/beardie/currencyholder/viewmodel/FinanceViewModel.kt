@@ -15,8 +15,7 @@ class FinanceViewModel @Inject constructor(
         context: Application,
         private val transactionRepository: TransactionRepository,
         private val balanceRepository: BalanceRepository,
-        private val currencyRepository: CurrencyRepository,
-        private val exchangeRepository: ExchangeRepository
+        private val currencyRepository: CurrencyRepository
 ) : AndroidViewModel(context) {
 
     var currentCurrency : Int = 0
