@@ -39,6 +39,7 @@ class FinanceViewModel @Inject constructor(
         if (balance.value == null) {
             balance.value = balanceRepository.getBalance(currencyRepository.getCurrencyList()[currentCurrency])
         }
+        balance.value = balance.value
         return balance
     }
 

@@ -3,6 +3,7 @@ package com.example.beardie.currencyholder.di.module
 import android.arch.lifecycle.ViewModel
 import com.example.beardie.currencyholder.di.ViewModelKey
 import com.example.beardie.currencyholder.viewmodel.FinanceViewModel
+import com.example.beardie.currencyholder.viewmodel.SettingsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -14,4 +15,8 @@ internal abstract class ViewModelModule {
     @ViewModelKey(FinanceViewModel::class)
     abstract fun bindFinanceViewModel(viewModel : FinanceViewModel) : ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    abstract fun bindSettingsViewModel(view : SettingsViewModel) : ViewModel
 }

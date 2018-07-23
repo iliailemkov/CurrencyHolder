@@ -1,8 +1,6 @@
 package com.example.beardie.currencyholder.ui.finance
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,8 +8,8 @@ import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.data.model.Transaction
 
 class TransactionAdapter(
-        val context: Context?,
-        val transactions : List<Transaction>?
+        private val context: Context?,
+        private val transactions : List<Transaction>?
 ) : RecyclerView.Adapter<TransactionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): TransactionViewHolder {
