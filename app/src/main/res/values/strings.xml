@@ -8,4 +8,8 @@
     <string name="nav_header_description">Your money - our application</string>
     <!-- format -->
     <string name="format_balance_text">%1$.2f %2$s</string>
+
+    <string name="user_name_hint">Name</string>
+    <string name="info_description">This application is Financial Tracker for Yandex.School developer</string>
+    <string name="info_button_title">Tap me</string>
 </resources>

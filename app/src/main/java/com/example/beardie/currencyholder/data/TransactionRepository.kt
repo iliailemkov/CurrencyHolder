@@ -6,7 +6,7 @@ import javax.inject.Inject
 class TransactionRepository @Inject constructor() {
 
     fun getTransactions() : List<Transaction> {
-        return HardcodeValues.transactions
+        return listOf()//HardcodeValues.transactions
     }
 
     fun getTransactions(transactionId: String): Transaction? {
