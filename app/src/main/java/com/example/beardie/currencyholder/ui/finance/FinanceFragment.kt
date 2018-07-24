@@ -6,10 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +20,6 @@ import com.example.beardie.currencyholder.data.model.Transaction
 import com.example.beardie.currencyholder.di.ViewModelFactory
 import com.example.beardie.currencyholder.viewmodel.FinanceViewModel
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.activity_finance.*
-import kotlinx.android.synthetic.main.content_finance.*
 import kotlinx.android.synthetic.main.fragment_finance.*
 import javax.inject.Inject
 
@@ -41,15 +36,6 @@ class FinanceFragment @Inject constructor() : DaggerFragment(), AdapterView.OnIt
     @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-        val baseActivity = activity as FinanceActivity
-        baseActivity.toolbar.setTitle(R.string.finance_toolbar_title)
-        baseActivity.toolbar.elevation = 0f
-        baseActivity.nv_left_menu.setNavigationItemSelectedListener(baseActivity)
-        baseActivity.toggle = ActionBarDrawerToggle(baseActivity, baseActivity.dl_view, baseActivity.toolbar, R.string.app_name, R.string.app_name)
-        baseActivity.toggle.syncState()
-        baseActivity.dl_view.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        //baseActivity.supportActionBar?.setDefaultDisplayHomeAsUpEnabled(false)
 
         return inflater.inflate(R.layout.fragment_finance, container, false)
     }
