@@ -31,7 +31,7 @@ class AboutFragment @Inject constructor(): DaggerFragment(), View.OnClickListene
               button.setOnClickListener(this)
        }
 
-       override fun onClick(p0: View?) {
-              Toast.makeText(view?.context, listSmile[ThreadLocalRandom.current().nextInt(0, 5 + 1)], Toast.LENGTH_LONG).show()
+       override fun onClick(view: View) {
+              Toast.makeText(view.context, listSmile[ThreadLocalRandom.current().nextInt(0, 5 + 1)], Toast.LENGTH_LONG).show()
        }
 }
