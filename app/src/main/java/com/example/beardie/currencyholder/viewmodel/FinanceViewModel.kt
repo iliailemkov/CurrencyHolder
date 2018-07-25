@@ -10,7 +10,6 @@ import android.arch.lifecycle.LiveData
 import com.example.beardie.currencyholder.data.*
 import com.example.beardie.currencyholder.data.model.FinanceCurrency
 
-
 class FinanceViewModel @Inject constructor(
         context: Application,
         private val transactionRepository: TransactionRepository,
@@ -22,6 +21,8 @@ class FinanceViewModel @Inject constructor(
         set(value) {
             balance.value = balanceRepository.getBalance(currencyRepository.getCurrencyList()[value])
         }
+
+    //val currencyList by lazy { currencyRepository.getCurrencyList() }
 
     private var currencyList = MutableLiveData<List<FinanceCurrency>>()
 
