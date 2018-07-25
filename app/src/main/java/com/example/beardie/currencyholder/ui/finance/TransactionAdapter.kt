@@ -8,8 +8,8 @@ import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.data.model.Transaction
 
 class TransactionAdapter(
-        private val context: Context?,
-        private val transactions : List<Transaction>?
+        private val context: Context,
+        private val transactions : List<Transaction>
 ) : RecyclerView.Adapter<TransactionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): TransactionViewHolder {
@@ -17,12 +17,12 @@ class TransactionAdapter(
     }
 
     override fun getItemCount(): Int {
-        return transactions?.size ?: 0
+        return transactions.size
     }
 
     override fun onBindViewHolder(holder: TransactionViewHolder, pos: Int) {
-            holder.amount.text = transactions?.get(pos)?.count.toString()
-            holder.currency.text = transactions?.get(pos)?.currency?.shortTitle
+            holder.amount.text = transactions[pos].count.toString()
+            holder.currency.text = transactions[pos].currency.shortTitle
 
     }
 

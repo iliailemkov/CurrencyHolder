@@ -4,8 +4,8 @@ import com.example.beardie.currencyholder.data.enum.TypeOperationEnum
 import java.util.*
 
 data class Transaction(
-    var id: String = UUID.randomUUID().toString(),
-    var operation: TypeOperationEnum,
-    var count: Double,
-    var currency: FinanceCurrency
+    val id: String = UUID.randomUUID().toString(),
+    val operation: TypeOperationEnum,
+    val count: Double,
+    val currency: FinanceCurrency
 )

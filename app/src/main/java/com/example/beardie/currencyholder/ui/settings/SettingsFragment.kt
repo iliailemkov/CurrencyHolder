@@ -5,8 +5,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v4.widget.DrawerLayout
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +14,8 @@ import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.SharedConstants
 import com.example.beardie.currencyholder.data.model.FinanceCurrency
 import com.example.beardie.currencyholder.di.ViewModelFactory
-import com.example.beardie.currencyholder.ui.finance.FinanceActivity
 import com.example.beardie.currencyholder.viewmodel.SettingsViewModel
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.activity_finance.*
-import kotlinx.android.synthetic.main.content_finance.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import javax.inject.Inject
 
@@ -37,17 +32,9 @@ class SettingsFragment @Inject constructor() : DaggerFragment(), AdapterView.OnI
     @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
 
         settingViewModel = ViewModelProviders.of(this, viewModelFactory).get(SettingsViewModel::class.java)
 
-        val baseActivity = activity as FinanceActivity
-        baseActivity.toolbar.setTitle(R.string.settings_toolbar_title)
-        baseActivity.toolbar.elevation = 4f
-        baseActivity.toolbar.setWillNotDraw(false)
-        if(baseActivity.dl_view.isDrawerOpen(Gravity.START))
-            baseActivity.dl_view.closeDrawer(Gravity.START, true)
-        baseActivity.dl_view.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         generateObservers()
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
