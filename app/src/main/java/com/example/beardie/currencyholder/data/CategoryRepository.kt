@@ -2,12 +2,17 @@ package com.example.beardie.currencyholder.data
 
 import com.example.beardie.currencyholder.data.model.FinanceCurrency
 import com.example.beardie.currencyholder.data.model.Transaction
+import com.example.beardie.currencyholder.data.model.TransactionCategory
 import javax.inject.Inject
 
-class TransactionRepository @Inject constructor() {
+class CategoryRepository @Inject constructor() {
 
-    fun getTransactions() : List<Transaction> {
-        return HardcodeValues.transactions
+    fun getCategories() : List<TransactionCategory> {
+        return HardcodeValues.category
+    }
+
+    fun addCategory(category : TransactionCategory) : Unit {
+        HardcodeValues.category.add(category)
     }
 
     fun getTransactions(transactionId: String): Transaction? {

@@ -9,12 +9,16 @@ import javax.inject.Inject
 import android.arch.lifecycle.LiveData
 import com.example.beardie.currencyholder.data.*
 import com.example.beardie.currencyholder.data.model.FinanceCurrency
+import com.example.beardie.currencyholder.domain.SummaryInteractor
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
 
 class FinanceViewModel @Inject constructor(
         context: Application,
         private val transactionRepository: TransactionRepository,
         private val balanceRepository: BalanceRepository,
-        private val currencyRepository: CurrencyRepository
+        private val currencyRepository: CurrencyRepository,
+        private val summaryInteractor: SummaryInteractor
 ) : AndroidViewModel(context) {
 
     var currentCurrency : Int = 0
@@ -51,4 +55,16 @@ class FinanceViewModel @Inject constructor(
         }
         return transactions
     }
+
+    private var summary = MutableLiveData<PieDataSet>()
+
+    fun getSummary(): LiveData<PieDataSet> {
+        if (summary.value == null) {
+            summary.value = summaryInteractor.getPieChartValues().value
+        }
+        return summary
+    }
+
+    //val summary by lazy { summaryInteractor.getPieChartValues() }
+
 }

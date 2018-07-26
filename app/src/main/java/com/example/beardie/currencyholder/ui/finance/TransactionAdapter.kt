@@ -21,9 +21,8 @@ class TransactionAdapter(
     }
 
     override fun onBindViewHolder(holder: TransactionViewHolder, pos: Int) {
-            holder.amount.text = transactions[pos].count.toString()
-            holder.currency.text = transactions[pos].currency.shortTitle
-
+        holder.amount.text = transactions[pos].count.toString()
+        holder.currency.text = transactions[pos].currency.shortTitle
     }
 
 }

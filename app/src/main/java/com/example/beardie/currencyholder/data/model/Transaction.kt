@@ -7,5 +7,7 @@ data class Transaction(
     val id: String = UUID.randomUUID().toString(),
     val operation: TypeOperationEnum,
     val count: Double,
-    val currency: FinanceCurrency
+    val balance: Balance,
+    val currency: FinanceCurrency,
+    val category: TransactionCategory
 )

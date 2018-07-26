@@ -37,8 +37,10 @@ class FinanceActivity : DaggerAppCompatActivity(),
         toggle.isDrawerIndicatorEnabled = true
         dl_view.addDrawerListener(toggle)
         toggle.syncState()
-        if(savedInstanceState == null)
+        if(savedInstanceState == null) {
+            initToolbar(R.string.finance_toolbar_title, 4f)
             supportFragmentManager.beginTransaction().add(R.id.fl_finance_frame, financeFragment).commit()
+        }
     }
 
     override fun onBackStackChanged() {
@@ -48,7 +50,7 @@ class FinanceActivity : DaggerAppCompatActivity(),
             toolbar.setNavigationOnClickListener { onBackPressed() }
             dl_view.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         } else {
-            initToolbar(R.string.finance_toolbar_title, 0f)
+            initToolbar(R.string.finance_toolbar_title, 4f)
             toggle = ActionBarDrawerToggle(this, dl_view, toolbar, R.string.app_name, R.string.app_name)
             toggle.isDrawerIndicatorEnabled = true
             dl_view.addDrawerListener(toggle)

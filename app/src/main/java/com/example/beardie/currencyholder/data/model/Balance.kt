@@ -4,6 +4,7 @@ import java.util.*
 
 data class Balance (
     val id: String = UUID.randomUUID().toString(),
+    val name: String,
     val balance: Double,
     val currency: FinanceCurrency,
     val active: Boolean
