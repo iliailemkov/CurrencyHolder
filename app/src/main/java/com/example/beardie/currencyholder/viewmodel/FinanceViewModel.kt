@@ -18,15 +18,14 @@ class FinanceViewModel @Inject constructor(
         private val transactionRepository: TransactionRepository,
         private val balanceRepository: BalanceRepository,
         private val currencyRepository: CurrencyRepository,
-        private val summaryInteractor: SummaryInteractor
+        private val summaryInteractor: SummaryInteractor,
+        private val prefRepository: SharedPrefRepository
 ) : AndroidViewModel(context) {
 
-    var currentCurrency : Int = 0
+    var currentCurrency : Int = prefRepository.getDefaultCurrency()
         set(value) {
             balance.value = balanceRepository.getBalance(currencyRepository.getCurrencyList()[value])
         }
-
-    //val currencyList by lazy { currencyRepository.getCurrencyList() }
 
     private var currencyList = MutableLiveData<List<FinanceCurrency>>()
 
@@ -64,7 +63,4 @@ class FinanceViewModel @Inject constructor(
         }
         return summary
     }
-
-    //val summary by lazy { summaryInteractor.getPieChartValues() }
-
 }

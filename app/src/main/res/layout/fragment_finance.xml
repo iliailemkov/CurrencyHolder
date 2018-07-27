@@ -104,7 +104,6 @@
         android:clickable="true"
         app:backgroundTint="@color/colorPrimaryDark"
         app:layout_anchor="@id/rv_transaction_list"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:layout_anchorGravity="bottom|end" />
 
 </android.support.design.widget.CoordinatorLayout>

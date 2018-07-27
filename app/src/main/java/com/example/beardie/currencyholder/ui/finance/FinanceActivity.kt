@@ -12,6 +12,7 @@ import android.view.MenuItem
 import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.ui.about.AboutFragment
 import com.example.beardie.currencyholder.ui.settings.SettingsFragment
+import com.squareup.leakcanary.LeakCanary
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_finance.*
 import kotlinx.android.synthetic.main.content_finance.*
@@ -21,9 +22,6 @@ class FinanceActivity : DaggerAppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
         FragmentManager.OnBackStackChangedListener {
 
-    @Inject lateinit var financeFragment: FinanceFragment
-    @Inject lateinit var settingsFragment: SettingsFragment
-    @Inject lateinit var aboutFragment: AboutFragment
     private lateinit var toggle : ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +37,7 @@ class FinanceActivity : DaggerAppCompatActivity(),
         toggle.syncState()
         if(savedInstanceState == null) {
             initToolbar(R.string.finance_toolbar_title, 4f)
-            supportFragmentManager.beginTransaction().add(R.id.fl_finance_frame, financeFragment).commit()
+            supportFragmentManager.beginTransaction().add(R.id.fl_finance_frame, FinanceFragment.newInstance()).commit()
         }
     }
 
@@ -68,11 +66,11 @@ class FinanceActivity : DaggerAppCompatActivity(),
         when(item.itemId) {
             R.id.action_settings -> {
                 initToolbar(R.string.settings_toolbar_title, 4f)
-                supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, settingsFragment).addToBackStack(null).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, SettingsFragment.newInstance()).addToBackStack(null).commit()
             }
             R.id.action_about -> {
                 initToolbar(R.string.about_toolbar_title, 4f)
-                supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, aboutFragment).addToBackStack(null).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, AboutFragment.newInstance()).addToBackStack(null).commit()
             }
         }
         return true
