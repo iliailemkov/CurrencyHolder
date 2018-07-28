@@ -3,6 +3,7 @@
     <string name="finance_toolbar_title">Finances</string>
     <string name="settings_toolbar_title">Settings</string>
     <string name="about_toolbar_title">About</string>
+    <string name="add_transaction_toolbar_title">Add transaction</string>
     <string name="title_no_transactions">Someone stolen your transactions</string>
     <string name="nav_header_title">Finance</string>
     <string name="nav_header_description">Your money - our application</string>
@@ -12,4 +13,9 @@
     <string name="user_name_hint">Name</string>
     <string name="info_description">This application is Financial Tracker for Yandex.School developer</string>
     <string name="info_button_title">Tap me</string>
+
+    <string name="amount_hint">Amount</string>
+    <string name="date_hint">Date</string>
+    <string name="save_btn_title">Add</string>
+    <string name="values_validate_toast">Incorrect input data</string>
 </resources>

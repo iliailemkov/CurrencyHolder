@@ -1,6 +1,7 @@
 package com.example.beardie.currencyholder.di.module
 
 import com.example.beardie.currencyholder.ui.about.AboutFragment
+import com.example.beardie.currencyholder.ui.finance.AddTransactionFragment
 import com.example.beardie.currencyholder.ui.finance.FinanceActivity
 import com.example.beardie.currencyholder.ui.finance.FinanceFragment
 import com.example.beardie.currencyholder.ui.settings.SettingsFragment
@@ -21,4 +22,7 @@ abstract class ViewModule {
 
     @ContributesAndroidInjector
     abstract fun aboutFragment() : AboutFragment
+
+    @ContributesAndroidInjector
+    abstract fun addTransactionFragment() : AddTransactionFragment
 }

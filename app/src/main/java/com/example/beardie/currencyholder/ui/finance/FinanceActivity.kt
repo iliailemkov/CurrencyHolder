@@ -12,6 +12,7 @@ import android.view.MenuItem
 import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.ui.about.AboutFragment
 import com.example.beardie.currencyholder.ui.settings.SettingsFragment
+import com.squareup.leakcanary.LeakCanary
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_finance.*
 import kotlinx.android.synthetic.main.content_finance.*
@@ -21,9 +22,6 @@ class FinanceActivity : DaggerAppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
         FragmentManager.OnBackStackChangedListener {
 
-    @Inject lateinit var financeFragment: FinanceFragment
-    @Inject lateinit var settingsFragment: SettingsFragment
-    @Inject lateinit var aboutFragment: AboutFragment
     private lateinit var toggle : ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +35,10 @@ class FinanceActivity : DaggerAppCompatActivity(),
         toggle.isDrawerIndicatorEnabled = true
         dl_view.addDrawerListener(toggle)
         toggle.syncState()
-        if(savedInstanceState == null)
-            supportFragmentManager.beginTransaction().add(R.id.fl_finance_frame, financeFragment).commit()
+        if(savedInstanceState == null) {
+            initToolbar(R.string.finance_toolbar_title, 4f)
+            supportFragmentManager.beginTransaction().add(R.id.fl_finance_frame, FinanceFragment.newInstance()).commit()
+        }
     }
 
     override fun onBackStackChanged() {
@@ -48,7 +48,7 @@ class FinanceActivity : DaggerAppCompatActivity(),
             toolbar.setNavigationOnClickListener { onBackPressed() }
             dl_view.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         } else {
-            initToolbar(R.string.finance_toolbar_title, 0f)
+            initToolbar(R.string.finance_toolbar_title, resources.getDimension(R.dimen.default_app_elevation))
             toggle = ActionBarDrawerToggle(this, dl_view, toolbar, R.string.app_name, R.string.app_name)
             toggle.isDrawerIndicatorEnabled = true
             dl_view.addDrawerListener(toggle)
@@ -65,12 +65,12 @@ class FinanceActivity : DaggerAppCompatActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_settings -> {
-                initToolbar(R.string.settings_toolbar_title, 4f)
-                supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, settingsFragment).addToBackStack(null).commit()
+                initToolbar(R.string.settings_toolbar_title, resources.getDimension(R.dimen.default_app_elevation))
+                supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, SettingsFragment.newInstance()).addToBackStack(null).commit()
             }
             R.id.action_about -> {
-                initToolbar(R.string.about_toolbar_title, 4f)
-                supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, aboutFragment).addToBackStack(null).commit()
+                initToolbar(R.string.about_toolbar_title, resources.getDimension(R.dimen.default_app_elevation))
+                supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, AboutFragment.newInstance()).addToBackStack(null).commit()
             }
         }
         return true
