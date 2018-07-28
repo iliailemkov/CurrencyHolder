@@ -1,23 +1,21 @@
 package com.example.beardie.currencyholder.ui.finance
 
-import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.DividerItemDecoration.VERTICAL
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.data.model.Balance
-import com.example.beardie.currencyholder.data.model.FinanceCurrency
 import com.example.beardie.currencyholder.data.model.Transaction
 import com.example.beardie.currencyholder.di.ViewModelFactory
 import com.example.beardie.currencyholder.viewmodel.FinanceViewModel
@@ -47,7 +45,6 @@ class FinanceFragment : DaggerFragment(),
         }
     }
 
-    @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -58,6 +55,10 @@ class FinanceFragment : DaggerFragment(),
         super.onViewCreated(view, savedInstanceState)
         financeViewModel = ViewModelProviders.of(this, viewModelFactory).get(FinanceViewModel::class.java)
         appbar.addOnOffsetChangedListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
         initBalance()
         initTransactionList()
         initChart()
@@ -85,21 +86,17 @@ class FinanceFragment : DaggerFragment(),
             }
         }
         financeViewModel.getBalance().observe(this, changeBalance)
-        val currencyNameList: Observer<List<FinanceCurrency>> = Observer { res ->
-            if(res != null) {
-                s_currency_list.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, res.map { l -> l.shortTitle })
-            }
-        }
-        financeViewModel.getCurrencyShortNameList().observe(this, currencyNameList)
-        //financeViewModel.currentCurrency = shared.getInt(SharedConstants.DEFAULT_CURRENCY, 0)
-        s_currency_list.onItemSelectedListener = this
+        s_balance_names.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, financeViewModel.getBalanceNames().value!!.map { r -> r.name })
+        s_balance_names.onItemSelectedListener = this
     }
+
 
     private fun initTransactionList() {
         val changeTransaction: Observer<List<Transaction>> = Observer { res ->
             if (res != null) {
                 rv_transaction_list.layoutManager = LinearLayoutManager(context)
                 rv_transaction_list.adapter = TransactionAdapter(context!!, res)
+                rv_transaction_list.addItemDecoration(DividerItemDecoration(context, VERTICAL))
                 if (financeViewModel.getTransactions().value?.isNotEmpty() == true) {
                     rv_transaction_list.visibility = View.VISIBLE
                     view_holder.visibility = View.GONE
@@ -111,7 +108,7 @@ class FinanceFragment : DaggerFragment(),
         }
         financeViewModel.getTransactions().observe(this, changeTransaction)
         fab_add_transaction.setOnClickListener { view ->
-            Toast.makeText(context, "Добавлена группа", Toast.LENGTH_SHORT).show()
+            activity!!.supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, AddTransactionFragment.newInstance()).addToBackStack(null).commit()
         }
     }
 
@@ -122,7 +119,7 @@ class FinanceFragment : DaggerFragment(),
                 dataSet!!.sliceSpace = 8f
                 dataSet.selectionShift = 8f
                 dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
-                dataSet.setDrawValues(false)
+                dataSet.setDrawValues(true)
                 val data = PieData(dataSet)
                 data.setValueFormatter(PercentFormatter())
                 data.setValueTextSize(12f)
@@ -142,13 +139,12 @@ class FinanceFragment : DaggerFragment(),
         chart.description.isEnabled = false
 
         chart.isDrawHoleEnabled = true
-        chart.holeRadius = 45f
-        chart.transparentCircleRadius = 0f
+        chart.holeRadius = 30f
+        chart.transparentCircleRadius = 40f
         chart.setHoleColor(Color.WHITE)
         chart.setTransparentCircleColor(Color.WHITE)
-        chart.setTransparentCircleAlpha(50)
+        chart.setTransparentCircleAlpha(90)
 
-        chart.setDrawCenterText(true)
         chart.setUsePercentValues(true)
         chart.setExtraOffsets(8f, 8f, 8f, 8f)
         chart.dragDecelerationFrictionCoef = 0.95f
@@ -163,17 +159,18 @@ class FinanceFragment : DaggerFragment(),
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
         if (verticalOffset == 0) {
             (activity as AppCompatActivity).supportActionBar?.elevation = 0f
+            rl_balance_view.elevation = 0f
         } else if(verticalOffset == -appBarLayout.totalScrollRange) {
             (activity as AppCompatActivity).supportActionBar?.elevation = 0f
-            rl_balance_view.elevation = 4f
-        } else {
             rl_balance_view.elevation = 0f
-            (activity as AppCompatActivity).supportActionBar?.elevation = 4f
+        } else {
+            (activity as AppCompatActivity).supportActionBar?.elevation = resources.getDimension(R.dimen.default_app_elevation)
+            rl_balance_view.elevation = resources.getDimension(R.dimen.default_app_elevation)
         }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-        financeViewModel.currentCurrency = pos
+        financeViewModel.currentBalance = financeViewModel.getBalanceNames().value!![pos].id
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

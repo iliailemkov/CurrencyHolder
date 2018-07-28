@@ -8,3 +8,9 @@
 /build
 /captures
 .externalNativeBuild
+/.idea/
+.idea/checkstyle-idea.xml
+.idea/sonarlint/
+.idea/vcs.xml
+app/libs/
+app/release/

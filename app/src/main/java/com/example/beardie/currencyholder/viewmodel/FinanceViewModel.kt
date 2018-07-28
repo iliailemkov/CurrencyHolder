@@ -22,9 +22,11 @@ class FinanceViewModel @Inject constructor(
         private val prefRepository: SharedPrefRepository
 ) : AndroidViewModel(context) {
 
-    var currentCurrency : Int = prefRepository.getDefaultCurrency()
+    var currentBalance : String = "0"// prefRepository.getDefaultCurrency()
         set(value) {
-            balance.value = balanceRepository.getBalance(currencyRepository.getCurrencyList()[value])
+            balance.value = balanceRepository.getBalance(value)
+            transactions.value = transactionRepository.getTransactions(balance.value!!)
+            summary.value = summaryInteractor.getPieChartValues(balance.value!!).value
         }
 
     private var currencyList = MutableLiveData<List<FinanceCurrency>>()
@@ -40,17 +42,27 @@ class FinanceViewModel @Inject constructor(
 
     fun getBalance(): LiveData<Balance> {
         if (balance.value == null) {
-            balance.value = balanceRepository.getBalance(currencyRepository.getCurrencyList()[currentCurrency])
+            balance.value = balanceRepository.getBalance(currentBalance)
         }
         balance.value = balance.value
         return balance
+    }
+
+    private var balances = MutableLiveData<List<Balance>>()
+
+    fun getBalanceNames(): LiveData<List<Balance>> {
+        if (balances.value == null) {
+            balances.value = balanceRepository.getBalances()
+        }
+        balances.value = balances.value
+        return balances
     }
 
     private var transactions = MutableLiveData<List<Transaction>>()
 
     fun getTransactions(): LiveData<List<Transaction>> {
         if (transactions.value == null) {
-            transactions.value = transactionRepository.getTransactions()
+            transactions.value = transactionRepository.getTransactions().filter { f -> f.balance.id == currentBalance }
         }
         return transactions
     }
@@ -59,7 +71,7 @@ class FinanceViewModel @Inject constructor(
 
     fun getSummary(): LiveData<PieDataSet> {
         if (summary.value == null) {
-            summary.value = summaryInteractor.getPieChartValues().value
+            summary.value = summaryInteractor.getPieChartValues(balance.value?: balanceRepository.getBalances()[0]).value
         }
         return summary
     }

@@ -10,7 +10,7 @@ class BalanceRepository @Inject constructor() {
         return HardcodeValues.balances
     }
 
-    fun getBalance(financeCurrency: FinanceCurrency?): Balance? {
-        return HardcodeValues.balances.find { b -> b.currency == financeCurrency }
+    fun getBalance(id : String): Balance? {
+        return HardcodeValues.balances.find { b -> b.id == id }
     }
 }

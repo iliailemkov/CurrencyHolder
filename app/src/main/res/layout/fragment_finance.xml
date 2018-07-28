@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
+        android:paddingBottom="4dp"
+        android:stateListAnimator="@animator/appbar_always_elevated"
         android:visibility="visible">
 
         <RelativeLayout
@@ -31,15 +33,16 @@
         <RelativeLayout
             android:id="@+id/rl_balance_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/background_light">
+            android:layout_height="60dp"
+            android:background="@android:color/background_light"
+            android:elevation="@dimen/default_app_elevation">
 
             <Spinner
-                android:id="@+id/s_currency_list"
+                android:id="@+id/s_balance_names"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_app_margin"
-                android:elevation="8dp" />
+                android:elevation="@dimen/default_app_elevation" />
 
             <TextView
                 android:id="@+id/tv_balance"
@@ -102,6 +105,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:clickable="true"
+        android:src="@drawable/ic_fab"
         app:backgroundTint="@color/colorPrimaryDark"
         app:layout_anchor="@id/rv_transaction_list"
         app:layout_anchorGravity="bottom|end" />

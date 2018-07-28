@@ -3,7 +3,6 @@ package com.example.beardie.currencyholder.ui.settings
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -63,7 +62,6 @@ class SettingsFragment : DaggerFragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        //shared.edit().putInt(SharedConstants.DEFAULT_CURRENCY, p2).apply()
     }
 
 }

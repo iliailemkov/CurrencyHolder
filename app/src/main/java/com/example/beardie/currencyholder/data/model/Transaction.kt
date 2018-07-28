@@ -9,5 +9,6 @@ data class Transaction(
     val count: Double,
     val balance: Balance,
     val currency: FinanceCurrency,
+    val date : Date,
     val category: TransactionCategory
 )
