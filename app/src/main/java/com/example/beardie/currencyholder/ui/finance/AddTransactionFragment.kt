@@ -17,6 +17,7 @@ import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.data.enum.TypeCategoryEnum
 import com.example.beardie.currencyholder.data.model.TransactionCategory
 import com.example.beardie.currencyholder.di.ViewModelFactory
+import com.example.beardie.currencyholder.ui.Navigator
 import com.example.beardie.currencyholder.viewmodel.TransactionViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_add_transaction.*
@@ -105,25 +106,23 @@ class AddTransactionFragment : DaggerFragment(),
                         }
                         .create()
                         .show()
-            }
-            else
-            try {
-                saveTransaction()
-            } catch (e: IllegalArgumentException) {
-                Toast.makeText(activity, R.string.values_validate_toast, Toast.LENGTH_SHORT).show()
+            } else {
+                try {
+                    saveTransaction()
+                } catch (e: IllegalArgumentException) {
+                    Toast.makeText(activity, R.string.values_validate_toast, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     private fun saveTransaction(){
-
-            transactionViewModel.addTransaction(et_amount.text.toString().toDouble(),
-                    transactionViewModel.balances.value!![s_balance.selectedItemPosition],
-                    transactionViewModel.currencyList.value!![s_currency.selectedItemPosition],
-                    dateTime.time,
-                    transactionViewModel.categories.value!![s_category.selectedItemPosition])
-            activity!!.supportFragmentManager.popBackStack()
-
+        transactionViewModel.addTransaction(et_amount.text.toString().toDouble(),
+                transactionViewModel.balances.value!![s_balance.selectedItemPosition],
+                transactionViewModel.currencyList.value!![s_currency.selectedItemPosition],
+                dateTime.time,
+                transactionViewModel.categories.value!![s_category.selectedItemPosition])
+        (activity!! as Navigator).navigateBack()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {

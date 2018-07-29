@@ -19,6 +19,7 @@ import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.data.model.Balance
 import com.example.beardie.currencyholder.data.model.Transaction
 import com.example.beardie.currencyholder.di.ViewModelFactory
+import com.example.beardie.currencyholder.ui.Navigator
 import com.example.beardie.currencyholder.viewmodel.FinanceViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
@@ -113,7 +114,10 @@ class FinanceFragment : DaggerFragment(),
         s_balance_names.onItemSelectedListener = this
 
         fab_add_transaction.setOnClickListener { view ->
-            activity!!.supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, AddTransactionFragment.newInstance()).addToBackStack(null).commit()
+            if (activity != null) {
+                (activity as Navigator).initToolbar(R.string.add_transaction_toolbar_title, resources.getDimension(R.dimen.default_app_elevation))
+                (activity as Navigator).navigateTo(AddTransactionFragment.newInstance(), null)
+            }
         }
 
         transactionAdapter = TransactionAdapter(context!!)

@@ -28,5 +28,5 @@
     <string name="category_add_transaction_title">Choose category:</string>
 
     <string name="convert_message">Balance will have convert by current exchange rates</string>
-    <string name="exchange_response_exception">Exchange response exception</string>>
+    <string name="exchange_response_exception">Exchange response exception</string>
 </resources>
