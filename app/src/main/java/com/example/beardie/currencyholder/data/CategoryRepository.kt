@@ -16,9 +16,10 @@ class CategoryRepository @Inject constructor() {
         return categories
     }
 
-    fun filterByType(type: Int) : LiveData<List<TransactionCategory>> {
+    fun filterByType(value : Int) : LiveData<List<TransactionCategory>> {
+        val type = TypeCategoryEnum.findByNumber(value)
         val categories = MutableLiveData<List<TransactionCategory>>()
-        categories.value = HardcodeValues.category.filter { c -> c.type.res == type }
+        categories.value = HardcodeValues.category.filter { c -> c.type == type }
         return categories
     }
 

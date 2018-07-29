@@ -35,7 +35,9 @@ class TransactionViewModel @Inject constructor(
 
     val balances by lazy { balanceRepository.getAll() }
 
-    val categories = Transformations.switchMap(filter){ categoryRepository.filterByType(filter.value?: 0) }
+    val categories = Transformations.switchMap(filter) { id ->
+        categoryRepository.filterByType(id)
+    }?: categoryRepository.getAll()
 
     fun addTransaction(amount: Double, balance: Balance, currency: FinanceCurrency, date: Date, category: TransactionCategory) {
         balanceInteractor.addTransactions(amount, balance, currency, date, category)

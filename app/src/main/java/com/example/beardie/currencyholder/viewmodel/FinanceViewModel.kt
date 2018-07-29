@@ -5,8 +5,6 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import com.example.beardie.currencyholder.data.BalanceRepository
-import com.example.beardie.currencyholder.data.CurrencyRepository
-import com.example.beardie.currencyholder.data.SharedPrefRepository
 import com.example.beardie.currencyholder.data.TransactionRepository
 import com.example.beardie.currencyholder.domain.SummaryInteractor
 import javax.inject.Inject
@@ -15,9 +13,7 @@ class FinanceViewModel @Inject constructor(
         context: Application,
         private val transactionRepository: TransactionRepository,
         private val balanceRepository: BalanceRepository,
-        private val currencyRepository: CurrencyRepository,
-        private val summaryInteractor: SummaryInteractor,
-        private val prefRepository: SharedPrefRepository
+        private val summaryInteractor: SummaryInteractor
 ) : AndroidViewModel(context) {
 
     var currentBalance = MutableLiveData<String>()
@@ -26,8 +22,6 @@ class FinanceViewModel @Inject constructor(
         }
 
     val balance = Transformations.switchMap(currentBalance) { id -> balanceRepository.findById(id)}
-
-    val currencyList by lazy { currencyRepository.getAll() }
 
     val balances by lazy { balanceRepository.getAll() }
 
