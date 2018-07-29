@@ -47,11 +47,58 @@
                 android:textColor="@android:color/black" />
         </android.support.design.widget.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/balance_add_transaction_title"
+            android:textColor="@color/colorAccent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <Spinner
+            android:id="@+id/s_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/tv_currency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/currency_add_transaction_title"
+            android:textColor="@color/colorAccent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
         <Spinner
             android:id="@+id/s_currency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/tv_category_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category_type_add_transaction_title"
+            android:textColor="@color/colorAccent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <Spinner
+            android:id="@+id/s_category_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/category_add_transaction_title"
+            android:textColor="@color/colorAccent" />
 
         <Spinner
             android:id="@+id/s_category"
@@ -68,9 +115,9 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_marginTop="20dp"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimaryDark"
             android:text="@string/save_btn_title"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </ScrollView>

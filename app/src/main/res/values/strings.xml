@@ -18,4 +18,15 @@
     <string name="date_hint">Date</string>
     <string name="save_btn_title">Add</string>
     <string name="values_validate_toast">Incorrect input data</string>
+
+    <string name="outcome_title">Outcome</string>
+    <string name="income_title">Income</string>
+
+    <string name="balance_add_transaction_title">Choose balance:</string>
+    <string name="currency_add_transaction_title">Choose currency:</string>
+    <string name="category_type_add_transaction_title">Choose type:</string>
+    <string name="category_add_transaction_title">Choose category:</string>
+
+    <string name="convert_message">Balance will have convert by current exchange rates</string>
+    <string name="exchange_response_exception">Exchange response exception</string>>
 </resources>

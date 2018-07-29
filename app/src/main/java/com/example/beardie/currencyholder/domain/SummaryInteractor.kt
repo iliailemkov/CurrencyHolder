@@ -19,16 +19,17 @@ class SummaryInteractor @Inject constructor(
         val entries = ArrayList<PieEntry>()
         val color = ArrayList<Int>()
         var sum = 0f
-        categoryRepository.getCategories().forEach { category ->
-            if(category.type == TypeCategoryEnum.OUTGO) {
-                transactionRepository.getTransactions().filter { el -> (el.balance == balance) and (el.category == category) }.forEach { t ->
-                    sum += Math.abs(t.count.toFloat())
-                }
-                if(sum > 0)
-                entries.add(PieEntry(sum, category.name))
-                sum = 0f
+        categoryRepository.getAll().value?.forEach { category ->
+            transactionRepository.getAll().value?.filter { el ->
+                (el.balance == balance) and (el.category == category)
+            }?.forEach { t ->
+                sum += Math.abs(t.count.toFloat())
             }
+            if (sum > 0)
+                entries.add(PieEntry(sum, category.name))
+            sum = 0f
         }
+
         liveData.value = PieDataSet(entries, "")
         liveData.value!!.colors = color
         return liveData

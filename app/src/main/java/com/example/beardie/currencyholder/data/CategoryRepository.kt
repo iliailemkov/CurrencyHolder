@@ -1,5 +1,8 @@
 package com.example.beardie.currencyholder.data
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import com.example.beardie.currencyholder.data.enum.TypeCategoryEnum
 import com.example.beardie.currencyholder.data.model.FinanceCurrency
 import com.example.beardie.currencyholder.data.model.Transaction
 import com.example.beardie.currencyholder.data.model.TransactionCategory
@@ -7,28 +10,20 @@ import javax.inject.Inject
 
 class CategoryRepository @Inject constructor() {
 
-    fun getCategories() : List<TransactionCategory> {
-        return HardcodeValues.category
+    fun getAll() : LiveData<List<TransactionCategory>> {
+        val categories = MutableLiveData<List<TransactionCategory>>()
+        categories.value = HardcodeValues.category
+        return categories
     }
 
-    fun addCategory(category : TransactionCategory) : Unit {
+    fun filterByType(value : Int) : LiveData<List<TransactionCategory>> {
+        val type = TypeCategoryEnum.findByNumber(value)
+        val categories = MutableLiveData<List<TransactionCategory>>()
+        categories.value = HardcodeValues.category.filter { c -> c.type == type }
+        return categories
+    }
+
+    fun add(category : TransactionCategory) : Unit {
         HardcodeValues.category.add(category)
     }
-
-    fun getTransactions(transactionId: String): Transaction? {
-        return HardcodeValues.transactions.find { e -> e.id == transactionId }
-    }
-
-    fun getExchangeCoef(from: FinanceCurrency, to: FinanceCurrency) = HardcodeValues.exchange.find { e ->
-        e.fromCurrency == from && e.toCurrency == to }?.coef
-
-    fun getSumTransaction(defaultCurrency: FinanceCurrency) : Double {
-        return HardcodeValues.transactions.sumByDouble { t ->
-            if(t.currency ==  defaultCurrency)
-                t.count
-            else
-                t.count * HardcodeValues.exchange.find { exp -> exp.fromCurrency == t.currency }?.coef!!
-        }
-    }
-
 }

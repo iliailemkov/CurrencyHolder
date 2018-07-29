@@ -17,9 +17,9 @@ class SettingsViewModel @Inject constructor(
     private var currencyList = MutableLiveData<List<FinanceCurrency>>()
 
     fun getCurrencyShortNameList(): LiveData<List<FinanceCurrency>> {
-        if (currencyList.value == null) {
-            currencyList.value = currencyRepository.getCurrencyList()
-        }
+        //if (currencyList.value == null) {
+            //currencyList.value = currencyRepository.
+        //}
         return currencyList
     }
 }
