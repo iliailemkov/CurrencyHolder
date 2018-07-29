@@ -3,15 +3,13 @@ package com.example.beardie.currencyholder.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import com.example.beardie.currencyholder.data.model.Balance
-import com.example.beardie.currencyholder.data.model.Transaction
-import javax.inject.Inject
-import android.arch.lifecycle.LiveData
-import com.example.beardie.currencyholder.data.*
-import com.example.beardie.currencyholder.data.model.FinanceCurrency
+import android.arch.lifecycle.Transformations
+import com.example.beardie.currencyholder.data.BalanceRepository
+import com.example.beardie.currencyholder.data.CurrencyRepository
+import com.example.beardie.currencyholder.data.SharedPrefRepository
+import com.example.beardie.currencyholder.data.TransactionRepository
 import com.example.beardie.currencyholder.domain.SummaryInteractor
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
+import javax.inject.Inject
 
 class FinanceViewModel @Inject constructor(
         context: Application,
@@ -22,57 +20,19 @@ class FinanceViewModel @Inject constructor(
         private val prefRepository: SharedPrefRepository
 ) : AndroidViewModel(context) {
 
-    var currentBalance : String = "0"// prefRepository.getDefaultCurrency()
+    var currentBalance = MutableLiveData<String>()
         set(value) {
-            balance.value = balanceRepository.getBalance(value)
-            transactions.value = transactionRepository.getTransactions(balance.value!!)
-            summary.value = summaryInteractor.getPieChartValues(balance.value!!).value
+            currentBalance.value = value.value
         }
 
-    private var currencyList = MutableLiveData<List<FinanceCurrency>>()
+    val balance = Transformations.switchMap(currentBalance) { id -> balanceRepository.findById(id)}
 
-    fun getCurrencyShortNameList(): LiveData<List<FinanceCurrency>> {
-        if (currencyList.value == null) {
-            currencyList.value = currencyRepository.getCurrencyList()
-        }
-        return currencyList
-    }
+    val currencyList by lazy { currencyRepository.getAll() }
 
-    private var balance = MutableLiveData<Balance>()
+    val balances by lazy { balanceRepository.getAll() }
 
-    fun getBalance(): LiveData<Balance> {
-        if (balance.value == null) {
-            balance.value = balanceRepository.getBalance(currentBalance)
-        }
-        balance.value = balance.value
-        return balance
-    }
+    val transactions = Transformations.switchMap(currentBalance) { id -> transactionRepository.filterByBalanceId(id) }
 
-    private var balances = MutableLiveData<List<Balance>>()
+    val summary = Transformations.switchMap(currentBalance) { summaryInteractor.getPieChartValues(balance.value?: balanceRepository.getAll().value!![0]) }
 
-    fun getBalanceNames(): LiveData<List<Balance>> {
-        if (balances.value == null) {
-            balances.value = balanceRepository.getBalances()
-        }
-        balances.value = balances.value
-        return balances
-    }
-
-    private var transactions = MutableLiveData<List<Transaction>>()
-
-    fun getTransactions(): LiveData<List<Transaction>> {
-        if (transactions.value == null) {
-            transactions.value = transactionRepository.getTransactions().filter { f -> f.balance.id == currentBalance }
-        }
-        return transactions
-    }
-
-    private var summary = MutableLiveData<PieDataSet>()
-
-    fun getSummary(): LiveData<PieDataSet> {
-        if (summary.value == null) {
-            summary.value = summaryInteractor.getPieChartValues(balance.value?: balanceRepository.getBalances()[0]).value
-        }
-        return summary
-    }
 }

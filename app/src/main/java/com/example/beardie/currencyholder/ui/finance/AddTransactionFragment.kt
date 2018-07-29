@@ -9,11 +9,11 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import com.example.beardie.currencyholder.R
+import com.example.beardie.currencyholder.data.enum.TypeCategoryEnum
+import com.example.beardie.currencyholder.data.model.Balance
 import com.example.beardie.currencyholder.data.model.FinanceCurrency
 import com.example.beardie.currencyholder.data.model.TransactionCategory
 import com.example.beardie.currencyholder.di.ViewModelFactory
@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_add_transaction.*
 import java.lang.IllegalArgumentException
 import java.util.*
 import javax.inject.Inject
+
 
 class AddTransactionFragment : DaggerFragment(),
         DatePickerDialog.OnDateSetListener,
@@ -35,6 +36,23 @@ class AddTransactionFragment : DaggerFragment(),
 
     private var dateTime = Calendar.getInstance()
 
+    private val balanceList: Observer<List<Balance>> = Observer { res ->
+        if(res != null) {
+            s_category.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, res.map { l -> l.name })
+        }
+    }
+
+    private val currencyNameList: Observer<List<FinanceCurrency>> = Observer { res ->
+        if(res != null) {
+            s_currency.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, res.map { l -> l.shortTitle })
+        }
+    }
+
+    private val categoryList: Observer<List<TransactionCategory>> = Observer { res ->
+        if(res != null) {
+            s_category.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, res.map { l -> l.name })
+        }
+    }
 
     companion object {
         fun newInstance(): AddTransactionFragment {
@@ -53,11 +71,23 @@ class AddTransactionFragment : DaggerFragment(),
 
         transactionViewModel = ViewModelProviders.of(this, viewModelFactory).get(TransactionViewModel::class.java)
         initDateTimePicker()
-        initCurrencyNameList()
-        initCategoryList()
+        initCategoryType()
         initSaveButton()
     }
 
+    override fun onStart() {
+        super.onStart()
+        transactionViewModel.balances.observe(this, balanceList)
+        transactionViewModel.currencyList.observe(this, currencyNameList)
+        transactionViewModel.categories.observe(this, categoryList)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        transactionViewModel.balances.removeObservers(this)
+        transactionViewModel.currencyList.removeObservers(this)
+        transactionViewModel.categories.removeObservers(this)
+    }
 
     private fun initDateTimePicker() {
         et_date.setOnClickListener {
@@ -65,32 +95,26 @@ class AddTransactionFragment : DaggerFragment(),
         }
     }
 
-    private fun initCurrencyNameList() {
-        val currencyNameList: Observer<List<FinanceCurrency>> = Observer { res ->
-            if(res != null) {
-                s_currency.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, res.map { l -> l.shortTitle })
+    private fun initCategoryType() {
+        s_category.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, TypeCategoryEnum.values())
+        s_category.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
+                transactionViewModel.filter.value = position
             }
-        }
-        transactionViewModel.getCurrencyShortNameList().observe(this, currencyNameList)
-    }
 
-    private fun initCategoryList() {
-        val categoryList: Observer<List<TransactionCategory>> = Observer { res ->
-            if(res != null) {
-                s_category.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, res.map { l -> l.name })
+            override fun onNothingSelected(parentView: AdapterView<*>) {
             }
         }
-        transactionViewModel.getCategories().observe(this, categoryList)
     }
 
     private fun initSaveButton() {
         btn_save.setOnClickListener {
             try {
                 transactionViewModel.addTransaction(et_amount.text.toString().toDouble(),
-                        transactionViewModel.getBalance().value!!,
-                        transactionViewModel.getCurrencyShortNameList().value!![transactionViewModel.currentCurrency],
+                        transactionViewModel.balances.value!![s_balance.selectedItemPosition],
+                        transactionViewModel.currencyList.value!![s_currency.selectedItemPosition],
                         dateTime.time,
-                        transactionViewModel.getCategories().value!![4])
+                        transactionViewModel.categories.value!![s_category.selectedItemPosition])
                 activity!!.supportFragmentManager.popBackStack()
             } catch (e: IllegalArgumentException) {
                 Toast.makeText(activity, R.string.values_validate_toast, Toast.LENGTH_SHORT).show()
@@ -108,6 +132,6 @@ class AddTransactionFragment : DaggerFragment(),
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
         dateTime.set(Calendar.MINUTE, minute)
-        et_date.setText(DateUtils.formatDateTime(activity, dateTime.timeInMillis, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_DATE))
+        et_date.setText(DateUtils.formatDateTime(activity, dateTime.timeInMillis, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME))
     }
 }

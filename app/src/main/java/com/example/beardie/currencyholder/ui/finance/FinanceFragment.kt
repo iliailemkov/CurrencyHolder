@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.DividerItemDecoration.VERTICAL
@@ -39,6 +40,54 @@ class FinanceFragment : DaggerFragment(),
 
     private lateinit var financeViewModel : FinanceViewModel
 
+    private lateinit var transactionAdapter : TransactionAdapter
+
+    private val changeBalance = Observer<Balance> { res ->
+        if (res !== null) {
+            if (res.balance < 0) {
+                tv_balance.setTextColor(ContextCompat.getColor(context!!, android.R.color.holo_red_dark))
+            } else {
+                tv_balance.setTextColor(ContextCompat.getColor(context!!, android.R.color.holo_green_dark))
+            }
+            tv_balance.text = String.format(getString(R.string.format_balance_text,
+                    res.balance,
+                    res.currency.symbol))
+        }
+    }
+
+    private val changeTransaction: Observer<List<Transaction>> = Observer { res ->
+        if (res != null) {
+            if (financeViewModel.transactions.value?.isNotEmpty() == true) {
+                rv_transaction_list.visibility = View.VISIBLE
+                view_holder.visibility = View.GONE
+            } else {
+                rv_transaction_list.visibility = View.GONE
+                view_holder.visibility = View.VISIBLE
+            }
+        }
+        rv_transaction_list.adapter = transactionAdapter
+        transactionAdapter.transactions = res?: emptyList()
+        transactionAdapter.notifyDataSetChanged()
+    }
+
+    private val dataSet : Observer<PieDataSet> = Observer { res ->
+        if(res != null) {
+            val dataSet = financeViewModel.summary.value
+            dataSet!!.sliceSpace = 8f
+            dataSet.selectionShift = 8f
+            dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+            dataSet.setDrawValues(true)
+            val data = PieData(dataSet)
+            data.setValueFormatter(PercentFormatter())
+            data.setValueTextSize(12f)
+            data.setValueTextColor(Color.BLACK)
+            chart.data = data
+            chart.isHighlightPerTapEnabled = true
+            chart.highlightValues(null)
+            chart.invalidate()
+        }
+    }
+
     companion object {
         fun newInstance(): FinanceFragment {
             return FinanceFragment()
@@ -55,83 +104,35 @@ class FinanceFragment : DaggerFragment(),
         super.onViewCreated(view, savedInstanceState)
         financeViewModel = ViewModelProviders.of(this, viewModelFactory).get(FinanceViewModel::class.java)
         appbar.addOnOffsetChangedListener(this)
+
+        s_balance_names.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, financeViewModel.balances.value!!.map { r -> r.name })
+        s_balance_names.onItemSelectedListener = this
+
+        fab_add_transaction.setOnClickListener { view ->
+            activity!!.supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, AddTransactionFragment.newInstance()).addToBackStack(null).commit()
+        }
+
+        transactionAdapter = TransactionAdapter(context!!)
+        rv_transaction_list.layoutManager = LinearLayoutManager(context)
+        rv_transaction_list.addItemDecoration(DividerItemDecoration(context, VERTICAL))
+        initChart()
     }
 
     override fun onStart() {
         super.onStart()
-        initBalance()
-        initTransactionList()
-        initChart()
+        financeViewModel.balance.observe(this, changeBalance)
+        financeViewModel.transactions.observe(this, changeTransaction)
+        financeViewModel.summary.observe(this, dataSet)
     }
 
     override fun onStop() {
         super.onStop()
-        financeViewModel.getBalance().removeObservers(this)
-        financeViewModel.getCurrencyShortNameList().removeObservers(this)
-        financeViewModel.getTransactions().removeObservers(this)
-        financeViewModel.getSummary().removeObservers(this)
-    }
-
-    private fun initBalance() {
-        val changeBalance = Observer<Balance> { res ->
-            if (res !== null) {
-                if (res.balance < 0) {
-                    tv_balance.setTextColor(Color.RED)
-                } else {
-                    tv_balance.setTextColor(Color.GREEN)
-                }
-                tv_balance.text = String.format(getString(R.string.format_balance_text,
-                        res.balance,
-                        res.currency.symbol))
-            }
-        }
-        financeViewModel.getBalance().observe(this, changeBalance)
-        s_balance_names.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, financeViewModel.getBalanceNames().value!!.map { r -> r.name })
-        s_balance_names.onItemSelectedListener = this
-    }
-
-
-    private fun initTransactionList() {
-        val changeTransaction: Observer<List<Transaction>> = Observer { res ->
-            if (res != null) {
-                rv_transaction_list.layoutManager = LinearLayoutManager(context)
-                rv_transaction_list.adapter = TransactionAdapter(context!!, res)
-                rv_transaction_list.addItemDecoration(DividerItemDecoration(context, VERTICAL))
-                if (financeViewModel.getTransactions().value?.isNotEmpty() == true) {
-                    rv_transaction_list.visibility = View.VISIBLE
-                    view_holder.visibility = View.GONE
-                } else {
-                    rv_transaction_list.visibility = View.GONE
-                    view_holder.visibility = View.VISIBLE
-                }
-            }
-        }
-        financeViewModel.getTransactions().observe(this, changeTransaction)
-        fab_add_transaction.setOnClickListener { view ->
-            activity!!.supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, AddTransactionFragment.newInstance()).addToBackStack(null).commit()
-        }
+        financeViewModel.balance.removeObservers(this)
+        financeViewModel.transactions.removeObservers(this)
+        financeViewModel.summary.removeObservers(this)
     }
 
     private fun initChart() {
-        val dataSet : Observer<PieDataSet> = Observer { res ->
-            if(res != null) {
-                val dataSet = financeViewModel.getSummary().value
-                dataSet!!.sliceSpace = 8f
-                dataSet.selectionShift = 8f
-                dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
-                dataSet.setDrawValues(true)
-                val data = PieData(dataSet)
-                data.setValueFormatter(PercentFormatter())
-                data.setValueTextSize(12f)
-                data.setValueTextColor(Color.BLACK)
-                chart.data = data
-                chart.isHighlightPerTapEnabled = true
-                chart.highlightValues(null)
-                chart.invalidate()
-            }
-        }
-        financeViewModel.getSummary().observe(this, dataSet)
-
         chart.legend.isEnabled = true
         chart.legend.orientation = Legend.LegendOrientation.VERTICAL
         chart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
@@ -170,7 +171,7 @@ class FinanceFragment : DaggerFragment(),
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-        financeViewModel.currentBalance = financeViewModel.getBalanceNames().value!![pos].id
+        financeViewModel.currentBalance.value = financeViewModel.balances.value!![pos].id
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
