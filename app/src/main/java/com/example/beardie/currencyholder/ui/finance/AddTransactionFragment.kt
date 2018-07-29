@@ -1,9 +1,11 @@
 package com.example.beardie.currencyholder.ui.finance
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -91,16 +93,30 @@ class AddTransactionFragment : DaggerFragment(),
 
     private fun initSaveButton() {
         btn_save.setOnClickListener {
-            try {
-                transactionViewModel.addTransaction(et_amount.text.toString().toDouble(),
-                        transactionViewModel.balances.value!![s_balance.selectedItemPosition],
-                        transactionViewModel.currencyList.value!![s_currency.selectedItemPosition],
-                        dateTime.time,
-                        transactionViewModel.categories.value!![s_category.selectedItemPosition])
-                activity!!.supportFragmentManager.popBackStack()
-            } catch (e: IllegalArgumentException) {
-                Toast.makeText(activity, R.string.values_validate_toast, Toast.LENGTH_SHORT).show()
+            if(transactionViewModel.balances.value!![s_balance.selectedItemPosition].currency != transactionViewModel.currencyList.value!![s_currency.selectedItemPosition]) {
+                AlertDialog.Builder(context).setMessage(R.string.convert_message)
+                        .setCancelable(true)
+                        .setPositiveButton("OK") { dialogInterface, i ->
+                            saveTransaction()
+                        }
+                        .create()
+                        .show()
             }
+            else
+                saveTransaction()
+        }
+    }
+
+    private fun saveTransaction(){
+        try {
+            transactionViewModel.addTransaction(et_amount.text.toString().toDouble(),
+                    transactionViewModel.balances.value!![s_balance.selectedItemPosition],
+                    transactionViewModel.currencyList.value!![s_currency.selectedItemPosition],
+                    dateTime.time,
+                    transactionViewModel.categories.value!![s_category.selectedItemPosition])
+            activity!!.supportFragmentManager.popBackStack()
+        } catch (e: IllegalArgumentException) {
+            Toast.makeText(activity, R.string.values_validate_toast, Toast.LENGTH_SHORT).show()
         }
     }
 

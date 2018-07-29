@@ -22,9 +22,12 @@ import com.example.beardie.currencyholder.di.ViewModelFactory
 import com.example.beardie.currencyholder.viewmodel.FinanceViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_finance.*
@@ -33,7 +36,8 @@ import javax.inject.Inject
 
 class FinanceFragment : DaggerFragment(),
         AdapterView.OnItemSelectedListener,
-        AppBarLayout.OnOffsetChangedListener {
+        AppBarLayout.OnOffsetChangedListener,
+        OnChartValueSelectedListener{
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -155,6 +159,14 @@ class FinanceFragment : DaggerFragment(),
         chart.animateY(1000, Easing.EasingOption.EaseInOutQuad)
         chart.setEntryLabelColor(Color.BLACK)
         chart.setEntryLabelTextSize(14f)
+
+        chart.setOnChartValueSelectedListener(this)
+    }
+
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+    }
+
+    override fun onNothingSelected() {
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
