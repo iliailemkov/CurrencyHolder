@@ -46,6 +46,7 @@ dependencies {
     def support_version = "27.1.1"
     def leak_canary_version = "1.6.1"
     def dagger_version = "2.15"
+    def retrofit_version = "2.4.0"
     // kotlin std
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // support
@@ -60,7 +61,8 @@ dependencies {
     // timber logger
     implementation 'com.jakewharton.timber:timber:4.7.1'
     // retrofit 2
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
     // leak canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"

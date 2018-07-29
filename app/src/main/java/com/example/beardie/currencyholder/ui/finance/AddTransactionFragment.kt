@@ -97,27 +97,33 @@ class AddTransactionFragment : DaggerFragment(),
                 AlertDialog.Builder(context).setMessage(R.string.convert_message)
                         .setCancelable(true)
                         .setPositiveButton("OK") { dialogInterface, i ->
-                            saveTransaction()
+                            try {
+                                saveTransaction()
+                            } catch (e: RuntimeException) {
+                                Toast.makeText(activity, R.string.exchange_response_exception, Toast.LENGTH_SHORT).show()
+                            }
                         }
                         .create()
                         .show()
             }
             else
+            try {
                 saveTransaction()
+            } catch (e: IllegalArgumentException) {
+                Toast.makeText(activity, R.string.values_validate_toast, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun saveTransaction(){
-        try {
+
             transactionViewModel.addTransaction(et_amount.text.toString().toDouble(),
                     transactionViewModel.balances.value!![s_balance.selectedItemPosition],
                     transactionViewModel.currencyList.value!![s_currency.selectedItemPosition],
                     dateTime.time,
                     transactionViewModel.categories.value!![s_category.selectedItemPosition])
             activity!!.supportFragmentManager.popBackStack()
-        } catch (e: IllegalArgumentException) {
-            Toast.makeText(activity, R.string.values_validate_toast, Toast.LENGTH_SHORT).show()
-        }
+
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
