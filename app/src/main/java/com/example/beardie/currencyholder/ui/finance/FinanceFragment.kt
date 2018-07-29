@@ -19,6 +19,7 @@ import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.data.model.Balance
 import com.example.beardie.currencyholder.data.model.Transaction
 import com.example.beardie.currencyholder.di.ViewModelFactory
+import com.example.beardie.currencyholder.ui.Navigator
 import com.example.beardie.currencyholder.viewmodel.FinanceViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
@@ -61,17 +62,10 @@ class FinanceFragment : DaggerFragment(),
 
     private val changeTransaction: Observer<List<Transaction>> = Observer { res ->
         if (res != null) {
-            if (financeViewModel.transactions.value?.isNotEmpty() == true) {
-                rv_transaction_list.visibility = View.VISIBLE
-                view_holder.visibility = View.GONE
-            } else {
-                rv_transaction_list.visibility = View.GONE
-                view_holder.visibility = View.VISIBLE
-            }
+            rv_transaction_list.adapter = transactionAdapter
+            transactionAdapter.transactions = res
+            transactionAdapter.notifyDataSetChanged()
         }
-        rv_transaction_list.adapter = transactionAdapter
-        transactionAdapter.transactions = res?: emptyList()
-        transactionAdapter.notifyDataSetChanged()
     }
 
     private val dataSet : Observer<PieDataSet> = Observer { res ->
@@ -113,7 +107,10 @@ class FinanceFragment : DaggerFragment(),
         s_balance_names.onItemSelectedListener = this
 
         fab_add_transaction.setOnClickListener { view ->
-            activity!!.supportFragmentManager.beginTransaction().replace(R.id.fl_finance_frame, AddTransactionFragment.newInstance()).addToBackStack(null).commit()
+            if (activity != null) {
+                (activity as Navigator).initToolbar(R.string.add_transaction_toolbar_title, resources.getDimension(R.dimen.default_app_elevation))
+                (activity as Navigator).navigateTo(AddTransactionFragment.newInstance(), null)
+            }
         }
 
         transactionAdapter = TransactionAdapter(context!!)
@@ -137,7 +134,7 @@ class FinanceFragment : DaggerFragment(),
     }
 
     private fun initChart() {
-        chart.legend.isEnabled = true
+        chart.legend.isEnabled = financeViewModel.getShowLegend()
         chart.legend.orientation = Legend.LegendOrientation.VERTICAL
         chart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         chart.legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER

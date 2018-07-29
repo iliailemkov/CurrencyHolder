@@ -1,7 +1,6 @@
 package com.example.beardie.currencyholder.domain
 
-import android.widget.Toast
-import com.example.beardie.currencyholder.R
+import com.example.beardie.currencyholder.data.BalanceRepository
 import com.example.beardie.currencyholder.data.ExchangeRepository
 import com.example.beardie.currencyholder.data.HardcodeValues
 import com.example.beardie.currencyholder.data.TransactionRepository
@@ -18,20 +17,20 @@ import java.util.*
 import javax.inject.Inject
 
 class BalanceInteractor @Inject constructor(
+        private val balanceRepository: BalanceRepository,
         private val transactionRepository: TransactionRepository,
         private val exchangeRepository: ExchangeRepository
 ) {
 
     fun addTransactions(amount: Double, balance: Balance, currency: FinanceCurrency, date: Date, category: TransactionCategory) {
         if(balance.currency != currency) {
-
             exchangeRepository.getExchangeRate(currency, balance.currency, object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     transactionRepository.add(Transaction(UUID.randomUUID().toString(),
                             TypeOperationEnum.SUM,
-                            response.body()?.string().toString().substringAfterLast(":").dropLast(2).toDouble(),
+                            amount * response.body()?.string().toString().substringAfterLast(":").dropLast(2).toDouble(),
                             balance,
-                            currency,
+                            balance.currency,
                             date,
                             category))
                 }
@@ -49,6 +48,10 @@ class BalanceInteractor @Inject constructor(
                     category))
         }
 
+    }
+
+    private fun calculateBalance(balance: Balance, amount: Double) {
+        balanceRepository.setBalance(balance, amount)
     }
 
     fun getSumTransaction(defaultCurrency: FinanceCurrency) : Double {

@@ -19,4 +19,7 @@ class BalanceRepository @Inject constructor() {
         balance.value = HardcodeValues.balances.find { b -> b.id == id }
         return balance
     }
+
+    fun setBalance(balance: Balance, amount : Double) {
+    }
 }
