@@ -29,4 +29,7 @@ class FinanceViewModel @Inject constructor(
 
     val summary = Transformations.switchMap(currentBalance) { summaryInteractor.getPieChartValues(balance.value?: balanceRepository.getAll().value!![0]) }
 
+    fun getShowLegend() : Boolean {
+        return summaryInteractor.getShowLegend()
+    }
 }

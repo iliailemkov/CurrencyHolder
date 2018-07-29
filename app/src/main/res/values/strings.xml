@@ -29,4 +29,18 @@
 
     <string name="convert_message">Balance will have convert by current exchange rates</string>
     <string name="exchange_response_exception">Exchange response exception</string>
+
+    <string name="about_send_email">Feedback</string>
+
+    <string name="settings_switch_outgo">Show only outgo</string>
+    <string name="settings_switch_legend">Show chart legend</string>
+    <string name="mit_license">Copyright © 2018 Ilia Ilemkov
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+            SOFTWARE.
+    </string>
 </resources>

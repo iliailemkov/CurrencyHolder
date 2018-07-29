@@ -134,7 +134,7 @@ class FinanceFragment : DaggerFragment(),
     }
 
     private fun initChart() {
-        chart.legend.isEnabled = true
+        chart.legend.isEnabled = financeViewModel.getShowLegend()
         chart.legend.orientation = Legend.LegendOrientation.VERTICAL
         chart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         chart.legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER

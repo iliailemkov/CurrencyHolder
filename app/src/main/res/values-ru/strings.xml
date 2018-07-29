@@ -29,4 +29,9 @@
 
     <string name="convert_message">Баланс будет сконвертирован относительного текущего курса</string>
     <string name="exchange_response_exception">Ошибка выполнения запроса</string>
+
+    <string name="about_send_email">Обратная связь</string>
+
+    <string name="settings_switch_outgo">Показывать только траты</string>
+    <string name="settings_switch_legend">Отображать легенду</string>
 </resources>
