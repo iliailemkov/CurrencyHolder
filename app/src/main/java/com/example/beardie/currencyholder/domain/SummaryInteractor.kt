@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.example.beardie.currencyholder.data.CategoryRepository
 import com.example.beardie.currencyholder.data.TransactionRepository
-import com.example.beardie.currencyholder.data.enum.TypeCategoryEnum
 import com.example.beardie.currencyholder.data.model.Balance
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry

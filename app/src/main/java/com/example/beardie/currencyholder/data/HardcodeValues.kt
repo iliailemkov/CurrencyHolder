@@ -28,7 +28,7 @@ object HardcodeValues {
             ExchangeCurrency("2", currency[1], currency[0], 63.49)
     )
 
-    val balances = listOf(
+    var balances = listOf(
             Balance("1", "Наличные", -5000.0, currency[0], true),
             Balance("2", "Карта",100.0, currency[1], false)
     )

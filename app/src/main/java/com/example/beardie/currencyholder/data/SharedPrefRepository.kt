@@ -3,10 +3,7 @@ package com.example.beardie.currencyholder.data
 import android.content.SharedPreferences
 import javax.inject.Inject
 
-class SharedPrefRepository @Inject constructor() {
-
-    @Inject
-    lateinit var shared : SharedPreferences
+class SharedPrefRepository @Inject constructor(var shared : SharedPreferences) {
 
     companion object {
         const val DEFAULT_CURRENCY = "DefaultCurrency"

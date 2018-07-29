@@ -1,18 +1,16 @@
 package com.example.beardie.currencyholder.ui.finance
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.DialogInterface
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.data.enum.TypeCategoryEnum
 import com.example.beardie.currencyholder.data.model.TransactionCategory
@@ -26,9 +24,7 @@ import java.util.*
 import javax.inject.Inject
 
 
-class AddTransactionFragment : DaggerFragment(),
-        DatePickerDialog.OnDateSetListener,
-        TimePickerDialog.OnTimeSetListener {
+class AddTransactionFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -72,7 +68,6 @@ class AddTransactionFragment : DaggerFragment(),
             override fun onNothingSelected(parentView: AdapterView<*>) {
             }
         }
-        initDateTimePicker()
         initSaveButton()
     }
 
@@ -84,12 +79,6 @@ class AddTransactionFragment : DaggerFragment(),
     override fun onStop() {
         super.onStop()
         transactionViewModel.categories.removeObservers(this)
-    }
-
-    private fun initDateTimePicker() {
-        et_date.setOnClickListener {
-            DatePickerDialog(activity, this, dateTime.get(Calendar.YEAR), dateTime.get(Calendar.MONTH), dateTime.get(Calendar.DAY_OF_MONTH)).show()
-        }
     }
 
     private fun initSaveButton() {
@@ -123,18 +112,5 @@ class AddTransactionFragment : DaggerFragment(),
                 dateTime.time,
                 transactionViewModel.categories.value!![s_category.selectedItemPosition])
         (activity!! as Navigator).navigateBack()
-    }
-
-    override fun onDateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        dateTime.set(Calendar.YEAR, year)
-        dateTime.set(Calendar.MONTH, monthOfYear)
-        dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        TimePickerDialog(activity, this, dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE), true).show()
-    }
-
-    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        dateTime.set(Calendar.MINUTE, minute)
-        et_date.setText(DateUtils.formatDateTime(activity, dateTime.timeInMillis, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME))
     }
 }

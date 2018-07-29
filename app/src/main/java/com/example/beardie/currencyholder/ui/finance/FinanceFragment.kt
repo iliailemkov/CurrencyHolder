@@ -62,17 +62,10 @@ class FinanceFragment : DaggerFragment(),
 
     private val changeTransaction: Observer<List<Transaction>> = Observer { res ->
         if (res != null) {
-            if (financeViewModel.transactions.value?.isNotEmpty() == true) {
-                rv_transaction_list.visibility = View.VISIBLE
-                view_holder.visibility = View.GONE
-            } else {
-                rv_transaction_list.visibility = View.GONE
-                view_holder.visibility = View.VISIBLE
-            }
+            rv_transaction_list.adapter = transactionAdapter
+            transactionAdapter.transactions = res
+            transactionAdapter.notifyDataSetChanged()
         }
-        rv_transaction_list.adapter = transactionAdapter
-        transactionAdapter.transactions = res?: emptyList()
-        transactionAdapter.notifyDataSetChanged()
     }
 
     private val dataSet : Observer<PieDataSet> = Observer { res ->
