@@ -4,6 +4,7 @@ import com.example.beardie.currencyholder.data.BalanceRepository
 import com.example.beardie.currencyholder.data.ExchangeRepository
 import com.example.beardie.currencyholder.data.HardcodeValues
 import com.example.beardie.currencyholder.data.TransactionRepository
+import com.example.beardie.currencyholder.data.enum.TypeCategoryEnum
 import com.example.beardie.currencyholder.data.enum.TypeOperationEnum
 import com.example.beardie.currencyholder.data.model.Balance
 import com.example.beardie.currencyholder.data.model.FinanceCurrency
@@ -23,12 +24,13 @@ class BalanceInteractor @Inject constructor(
 ) {
 
     fun addTransactions(amount: Double, balance: Balance, currency: FinanceCurrency, date: Date, category: TransactionCategory) {
+        val coef = if(category.type == TypeCategoryEnum.OUTGO) -1 else 1
         if(balance.currency != currency) {
             exchangeRepository.getExchangeRate(currency, balance.currency, object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     transactionRepository.add(Transaction(UUID.randomUUID().toString(),
                             TypeOperationEnum.SUM,
-                            amount * response.body()?.string().toString().substringAfterLast(":").dropLast(2).toDouble(),
+                            coef * amount * response.body()?.string().toString().substringAfterLast(":").dropLast(2).toDouble(),
                             balance,
                             balance.currency,
                             date,
@@ -41,7 +43,7 @@ class BalanceInteractor @Inject constructor(
         } else {
             transactionRepository.add(Transaction(UUID.randomUUID().toString(),
                     TypeOperationEnum.SUM,
-                    amount,
+                    coef * amount,
                     balance,
                     currency,
                     date,
