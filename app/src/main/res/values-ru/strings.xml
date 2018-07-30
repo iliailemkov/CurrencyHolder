@@ -3,9 +3,35 @@
     <string name="finance_toolbar_title">Финансы</string>
     <string name="settings_toolbar_title">Настройки</string>
     <string name="about_toolbar_title">О приложении</string>
+    <string name="add_transaction_toolbar_title">Добавить транзакцию</string>
     <string name="title_no_transactions">Кто то украл ваши транзакции</string>
     <string name="nav_header_title">Финансовый трекер</string>
     <string name="nav_header_description">Ваши деньги - наше приложение</string>
     <!-- format -->
     <string name="format_balance_text">%1$.2f %2$s</string>
+
+    <string name="user_name_hint">Имя</string>
+    <string name="info_description">Это приложение Финансовый трекер для школы разработчиков Яндекс</string>
+    <string name="info_button_title">Нажми меня</string>
+
+    <string name="amount_hint">Количество</string>
+    <string name="date_hint">Дата</string>
+    <string name="save_btn_title">Добавить</string>
+    <string name="values_validate_toast">Некорректно введены данные</string>
+
+    <string name="outcome_title">Траты</string>
+    <string name="income_title">Доход</string>
+
+    <string name="balance_add_transaction_title">Выбор баланса:</string>
+    <string name="currency_add_transaction_title">Выбор валюты:</string>
+    <string name="category_type_add_transaction_title">Выбор типа категории:</string>
+    <string name="category_add_transaction_title">Выбор категории:</string>
+
+    <string name="convert_message">Баланс будет сконвертирован относительного текущего курса</string>
+    <string name="exchange_response_exception">Ошибка выполнения запроса</string>
+
+    <string name="about_send_email">Обратная связь</string>
+
+    <string name="settings_switch_outgo">Показывать только траты</string>
+    <string name="settings_switch_legend">Отображать легенду</string>
 </resources>

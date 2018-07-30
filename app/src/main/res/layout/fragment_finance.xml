@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,45 +7,73 @@
     android:orientation="vertical"
     tools:context=".ui.finance.FinanceActivity">
 
-    <RelativeLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
-        android:elevation="@dimen/default_app_elevation">
+        android:fitsSystemWindows="true"
+        android:paddingBottom="4dp"
+        android:stateListAnimator="@animator/appbar_always_elevated"
+        android:visibility="visible">
 
-        <Spinner
-            android:id="@+id/s_currency_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_app_margin"
-            android:elevation="8dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
-        <TextView
-            android:id="@+id/tv_balance"
-            style="@style/BalanceStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="@dimen/default_app_margin"
-            android:layout_marginRight="56dp"
-            android:layout_marginTop="@dimen/default_app_margin"
-            android:textColor="@android:color/holo_green_dark"
-            android:textSize="@dimen/spinner_text_size"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_balance_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@android:color/background_light"
+            android:elevation="@dimen/default_app_elevation">
+
+            <Spinner
+                android:id="@+id/s_balance_names"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_app_margin"
+                android:elevation="@dimen/default_app_elevation" />
+
+            <TextView
+                android:id="@+id/tv_balance"
+                style="@style/BalanceStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/default_app_margin"
+                android:layout_marginRight="56dp"
+                android:layout_marginTop="@dimen/default_app_margin"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="@dimen/spinner_text_size"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_transaction_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/default_app_margin"
-        android:visibility="gone" />
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/view_holder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ImageView
             android:id="@+id/imageView"
@@ -70,4 +98,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
     </android.support.constraint.ConstraintLayout>
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_transaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_fab"
+        app:backgroundTint="@color/colorPrimaryDark" />
+
+</android.support.design.widget.CoordinatorLayout>
