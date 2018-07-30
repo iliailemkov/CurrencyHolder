@@ -3,39 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
     tools:context=".ui.settings.SettingsFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:divider="@drawable/linear_divider"
+        android:orientation="vertical"
+        android:showDividers="middle" >
 
-        <ImageView
-            android:layout_width="170dp"
-            android:layout_height="170dp"
-            android:layout_gravity="center"
-            android:layout_margin="24dp"
-            android:src="@drawable/ic_gear" />
+        <Switch
+            android:id="@+id/switch_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/settings_switch_outgo" />
+
+        <Switch
+            android:id="@+id/switch_legend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/settings_switch_legend" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/background_light"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:enabled="false">
+            android:enabled="false"
+            android:padding="16dp">
 
             <EditText
                 android:id="@+id/et_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/label_fio"
+                android:enabled="false"
                 android:hint="@string/user_name_hint"
                 android:inputType="textPersonName"
-                android:textSize="16dp"
                 android:text="Name"
-                android:enabled="false"/>
+                android:textSize="16dp" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -44,28 +53,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/background_light"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:enabled="false">
+            android:enabled="false"
+            android:padding="16dp">
 
             <EditText
                 android:id="@+id/et_user_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:hint="@string/user_name_hint"
                 android:inputType="textEmailAddress"
-                android:textSize="16dp"
                 android:text="email@gmail.com"
-                android:enabled="false"/>
+                android:textSize="16dp" />
 
         </android.support.design.widget.TextInputLayout>
 
-        <Spinner
-            android:id="@+id/s_currency_setting_list"
+        <TextView
+            android:id="@+id/tv_license"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/background_light" />
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:text="License"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
     </LinearLayout>
 </ScrollView>

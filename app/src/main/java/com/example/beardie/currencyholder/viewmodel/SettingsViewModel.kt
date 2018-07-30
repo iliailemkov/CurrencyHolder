@@ -2,24 +2,27 @@ package com.example.beardie.currencyholder.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import com.example.beardie.currencyholder.data.CurrencyRepository
-import com.example.beardie.currencyholder.data.TransactionRepository
-import com.example.beardie.currencyholder.data.model.FinanceCurrency
+import com.example.beardie.currencyholder.data.SharedPrefRepository
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
         context: Application,
-        private val currencyRepository: CurrencyRepository
+        private val sprefRepository: SharedPrefRepository
 ) : AndroidViewModel(context) {
 
-    private var currencyList = MutableLiveData<List<FinanceCurrency>>()
+    fun setSummaryBoolean(value: Boolean) {
+        sprefRepository.setOnlyOutcomes(value)
+    }
 
-    fun getCurrencyShortNameList(): LiveData<List<FinanceCurrency>> {
-        if (currencyList.value == null) {
-            currencyList.value = currencyRepository.getCurrencyList()
-        }
-        return currencyList
+    fun getSummaryBoolean() : Boolean {
+        return sprefRepository.getOnlyOutcomes()
+    }
+
+    fun setShowLegend(value: Boolean) {
+        sprefRepository.setShowlegend(value)
+    }
+
+    fun getShowLegend() : Boolean {
+        return sprefRepository.getShowlegend()
     }
 }
