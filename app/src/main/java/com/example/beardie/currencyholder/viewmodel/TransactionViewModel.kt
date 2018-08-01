@@ -31,7 +31,7 @@ class TransactionViewModel @Inject constructor(
             filter.value = value.value
         }
 
-    val currencyList by lazy { currencyRepository.getAll() }
+    val currency by lazy { currencyRepository.getAll() }
 
     val balances by lazy { balanceRepository.getAll() }
 

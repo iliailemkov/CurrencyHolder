@@ -1,23 +1,14 @@
 package com.example.beardie.currencyholder.data.enum
 
-import android.text.TextUtils
+import com.example.beardie.currencyholder.R
 
 enum class TypeCategoryEnum constructor(
-        val title: String,
+        val stringRes: Int,
         val res: Int) {
-    INCOME("Доходы", 0),
-    OUTGO("Расходы", 1);
+    INCOME(R.string.income_title, 0),
+    OUTGO(R.string.outcome_title, 1);
 
     companion object {
-        fun findByTitle(value: String): TypeCategoryEnum? {
-            if (TextUtils.isEmpty(value))
-                return null
-            for (item in TypeCategoryEnum.values())
-                if (item.title.equals(value, ignoreCase = true))
-                    return item
-            return null
-        }
-
         fun findByNumber(value : Int): TypeCategoryEnum? {
             for (item in TypeCategoryEnum.values())
                 if (item.res == value)
