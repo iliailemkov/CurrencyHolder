@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.beardie.currencyholder.R
 import com.example.beardie.currencyholder.data.enum.TypeCategoryEnum
+import com.example.beardie.currencyholder.data.model.Balance
+import com.example.beardie.currencyholder.data.model.FinanceCurrency
 import com.example.beardie.currencyholder.data.model.TransactionCategory
 import com.example.beardie.currencyholder.di.ViewModelFactory
 import com.example.beardie.currencyholder.ui.Navigator
@@ -39,6 +41,18 @@ class AddTransactionFragment : DaggerFragment() {
         }
     }
 
+    private val balanceList: Observer<List<Balance>> = Observer { res ->
+        if(res != null) {
+            s_balance.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, res.map { l -> l.name })
+        }
+    }
+
+    private val currencyList: Observer<List<FinanceCurrency>> = Observer { res ->
+        if(res != null) {
+            s_currency.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, res.map { l -> l.shortTitle })
+        }
+    }
+
     companion object {
         fun newInstance(): AddTransactionFragment {
             return AddTransactionFragment()
@@ -56,10 +70,7 @@ class AddTransactionFragment : DaggerFragment() {
 
         transactionViewModel = ViewModelProviders.of(this, viewModelFactory).get(TransactionViewModel::class.java)
 
-        s_currency.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, transactionViewModel.currencyList.value!!.map { c -> c.shortTitle })
-        s_balance.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, transactionViewModel.balances.value!!.map { c -> c.name })
-        s_category.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, transactionViewModel.categories.value ?: emptyList())
-        s_category_type.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, TypeCategoryEnum.values().toList().map { v -> v.title })
+        s_category_type.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, TypeCategoryEnum.values().toList().map { v -> getString(v.stringRes) })
         s_category_type.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
                 transactionViewModel.filter.value = position
@@ -73,17 +84,21 @@ class AddTransactionFragment : DaggerFragment() {
 
     override fun onStart() {
         super.onStart()
+        transactionViewModel.balances.observe(this, balanceList)
         transactionViewModel.categories.observe(this, categoryList)
+        transactionViewModel.currency.observe(this, currencyList)
     }
 
     override fun onStop() {
         super.onStop()
         transactionViewModel.categories.removeObservers(this)
+        transactionViewModel.balances.removeObservers(this)
+        transactionViewModel.currency.removeObservers(this)
     }
 
     private fun initSaveButton() {
         btn_save.setOnClickListener {
-            if(transactionViewModel.balances.value!![s_balance.selectedItemPosition].currency != transactionViewModel.currencyList.value!![s_currency.selectedItemPosition]) {
+            if( transactionViewModel.balances.value?.find { l -> l.name == s_balance.adapter.getItem(s_balance.selectedItemPosition) }!!.currency.shortTitle != s_currency.adapter.getItem(s_currency.selectedItemPosition)) {
                 AlertDialog.Builder(context).setMessage(R.string.convert_message)
                         .setCancelable(true)
                         .setPositiveButton("OK") { dialogInterface, i ->
@@ -107,10 +122,10 @@ class AddTransactionFragment : DaggerFragment() {
 
     private fun saveTransaction(){
         transactionViewModel.addTransaction(et_amount.text.toString().toDouble(),
-                transactionViewModel.balances.value!![s_balance.selectedItemPosition],
-                transactionViewModel.currencyList.value!![s_currency.selectedItemPosition],
+                transactionViewModel.balances.value?.find { l -> l.name == s_balance.adapter.getItem(s_balance.selectedItemPosition) }!!,
+                transactionViewModel.currency.value?.find { c -> c.shortTitle == s_currency.adapter.getItem(s_currency.selectedItemPosition) }!!,
                 dateTime.time,
-                transactionViewModel.categories.value!![s_category.selectedItemPosition])
+                transactionViewModel.categories.value?.find { c -> c.name == s_category.adapter.getItem(s_category.selectedItemPosition) }!!)
         (activity!! as Navigator).navigateBack()
     }
 }
