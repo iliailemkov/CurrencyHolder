@@ -2,7 +2,6 @@ package com.example.beardie.currencyholder
 
 import com.crashlytics.android.Crashlytics
 import com.example.beardie.currencyholder.di.DaggerAppComponent
-import com.squareup.leakcanary.AnalyzerProgressListener
 import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
