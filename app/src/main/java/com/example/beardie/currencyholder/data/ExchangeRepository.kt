@@ -20,7 +20,7 @@ class ExchangeRepository @Inject constructor() {
 
     fun getExchangeRate(from: FinanceCurrency, to: FinanceCurrency, callback: Callback<ResponseBody> ) {
         ExchangeApiService.create()
-                .getExhangeRate(from.shortTitle + "_" + to.shortTitle, "y")
+                .getExchangeRate(from.shortTitle + "_" + to.shortTitle, "y")
                 .enqueue(callback)
     }
 }
