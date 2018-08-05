@@ -2,12 +2,7 @@ package com.example.beardie.currencyholder.data
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.example.beardie.currencyholder.data.enum.TypeOperationEnum
-import com.example.beardie.currencyholder.data.model.Balance
-import com.example.beardie.currencyholder.data.model.FinanceCurrency
 import com.example.beardie.currencyholder.data.model.Transaction
-import com.example.beardie.currencyholder.data.model.TransactionCategory
-import java.util.*
 import javax.inject.Inject
 
 class TransactionRepository @Inject constructor() {
